@@ -13,7 +13,45 @@
 
 핵심은 "강한 플러그인/정책 레이어 위에 coding-agent를 얹은 구조"라는 점이다.
 
-## 2. 핵심 구성요소와 역할
+## 2. 구조 다이어그램
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"background": "#0b1220", "mainBkg": "#111827", "secondBkg": "#111827", "tertiaryColor": "#111827", "primaryColor": "#111827", "secondaryColor": "#0f172a", "primaryTextColor": "#f9fafb", "secondaryTextColor": "#e5e7eb", "tertiaryTextColor": "#e5e7eb", "primaryBorderColor": "#e5e7eb", "secondaryBorderColor": "#cbd5e1", "tertiaryBorderColor": "#cbd5e1", "lineColor": "#e5e7eb", "textColor": "#f9fafb", "clusterBkg": "#0f172a", "clusterBorder": "#e5e7eb", "edgeLabelBackground": "#0b1220", "nodeBorder": "#e5e7eb"}}}%%
+flowchart TB
+    User[User Query]
+    Channel[Channel\nTelegram / Discord / Slack]
+    Gateway[Gateway\nControl Plane]
+
+    subgraph AgentRun[Agent Session Runtime]
+        Runner[attempt.ts\nSession Assembly]
+        Skills[Skill Catalog\nOn-demand SKILL.md Read]
+        Bootstrap[Bootstrap Context Files\nAGENTS / SOUL / TOOLS / IDENTITY / USER / MEMORY]
+        Tools[Tool Registry\nCoding + OpenClaw + Channel-aware Tools]
+        Policy[Policy Pipeline\nOwner / Channel / Sandbox / Subagent / Plugin]
+        Prompt[System Prompt\nProject Context + Runtime + Tooling]
+        Session[createAgentSession]
+    end
+
+    Plugins[Plugins / SDK\nProvider / Channel / Tool / Skill Extensions]
+    Model[LLM Provider]
+    Workspace[Workspace Files]
+
+    User --> Channel --> Gateway --> Runner
+    Workspace --> Bootstrap --> Runner
+    Plugins --> Skills
+    Plugins --> Tools
+    Plugins --> Gateway
+    Skills --> Runner
+    Tools --> Policy --> Runner
+    Runner --> Prompt --> Session --> Model
+    Gateway --> Prompt
+    Channel --> Prompt
+    Policy --> Session
+    Model --> Session
+    Session --> Gateway --> Channel
+```
+
+## 3. 핵심 구성요소와 역할
 
 ### agent
 
@@ -45,7 +83,7 @@
 - core가 모든 provider별 로직을 직접 품기보다, plugin registry와 documented seam을 통해 확장하는 구조다.
 - 그래서 `tool`, `provider`, `channel`, `skill`이 전부 같은 계층이 아니라 각기 다른 등록/정책 경로를 가진다.
 
-## 3. md 파일들의 역할
+## 4. md 파일들의 역할
 
 OpenClaw에서 md 파일은 "에이전트가 필요 시 읽는 문서"가 아니라, 상당수가 실행 전에 bootstrap context로 주입되는 워크스페이스 설정층이다.
 
@@ -89,7 +127,7 @@ OpenClaw에서 md 파일은 "에이전트가 필요 시 읽는 문서"가 아니
 - 내용이 크면 잘리고, 총 예산도 별도로 적용된다.
 - `SOUL.md`가 포함되면 system prompt에서 "그 톤과 페르소나를 따르라"는 추가 지시가 붙는다.
 
-## 4. skills의 역할과 특징
+## 5. skills의 역할과 특징
 
 ### 로딩 방식
 
@@ -145,7 +183,7 @@ OpenClaw는 skill 본문을 처음부터 system prompt에 전부 넣지 않는�
 - 실제 질의에 따라 model이 그중 하나를 고르고 `read`로 본문을 읽는다.
 - skill selection은 LLM 추론에 맡기고, 코드가 query-semantic filtering을 강하게 수행하지는 않는다.
 
-## 5. tools의 역할과 특징
+## 6. tools의 역할과 특징
 
 ### tool 생성
 
@@ -181,7 +219,7 @@ OpenClaw는 tool 정책이 강하다. tool은 단순 등록 후 전부 노출되
 - tool 사용 질의일 때는 같은 prompt를 바탕으로 tool call을 발생시킨다.
 - 별도의 "tool 질의 전용 system prompt"를 새로 만드는 구조는 아니고, 같은 prompt 안에서 tool 사용 규칙이 늘 존재한다.
 
-## 6. system instruction / tools / user input 전달 흐름
+## 7. system instruction / tools / user input 전달 흐름
 
 ### 조립 순서
 
@@ -220,7 +258,7 @@ OpenClaw는 tool 정책이 강하다. tool은 단순 등록 후 전부 노출되
 - 현재 분석 범위에서 user input에 따라 tools나 skills catalog가 직접 재구성되지는 않는다.
 - 도구 사용 여부는 대부분 모델 판단 + policy gate 조합이다.
 
-## 7. query 연계 tool filtering 여부
+## 8. query 연계 tool filtering 여부
 
 ### 결론
 
@@ -240,7 +278,7 @@ OpenClaw 내부에서 "사용자 질의 의미를 분석해서 관련 tool 일�
   transcript sanitization, malformed tool-call normalization, guard 용도에 더 가깝다.
 - 즉 OpenClaw는 "질의 기반 tool shortlist"보다 "정책 기반 tool universe 제한 + model에게 선택 맡김"에 더 가깝다.
 
-## 8. 특징 요약
+## 9. 특징 요약
 
 - OpenClaw는 plugin/SDK 경계가 강한 대형 오케스트레이터다.
 - md 파일은 system prompt의 Project Context로 주입되는 bootstrap 성격이 강하다.

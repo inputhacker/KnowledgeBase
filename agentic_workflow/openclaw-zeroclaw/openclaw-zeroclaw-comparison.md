@@ -19,7 +19,51 @@ OpenClaw와 ZeroClaw는 모두 `agent + gateway + channel + tools + skills + mem
 
 즉, OpenClaw의 개성은 "확장성과 정책 중심의 간접 제어"에서 나오고, ZeroClaw의 개성은 "단일 런타임 안에서의 명시적 제어와 동적 tool surface 관리"에서 나온다.
 
-## 3. 비교표
+## 3. 구조 비교 다이어그램
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"background": "#0b1220", "mainBkg": "#111827", "secondBkg": "#111827", "tertiaryColor": "#111827", "primaryColor": "#111827", "secondaryColor": "#0f172a", "primaryTextColor": "#f9fafb", "secondaryTextColor": "#e5e7eb", "tertiaryTextColor": "#e5e7eb", "primaryBorderColor": "#e5e7eb", "secondaryBorderColor": "#cbd5e1", "tertiaryBorderColor": "#cbd5e1", "lineColor": "#e5e7eb", "textColor": "#f9fafb", "clusterBkg": "#0f172a", "clusterBorder": "#e5e7eb", "edgeLabelBackground": "#0b1220", "nodeBorder": "#e5e7eb"}}}%%
+flowchart LR
+    subgraph OC[OpenClaw]
+        OCU[User / Channel]
+        OCG[Gateway\nControl Plane]
+        OCA[Agent Session Assembler]
+        OCS[Skill Catalog\nOn-demand Read]
+        OCT[Policy-shaped Tool Registry]
+        OCB[Bootstrap Context Files]
+        OCP[Large Composed System Prompt]
+        OCM[LLM]
+        OCU --> OCG --> OCA
+        OCS --> OCA
+        OCT --> OCA
+        OCB --> OCA
+        OCA --> OCP --> OCM
+    end
+
+    subgraph ZC[ZeroClaw]
+        ZCU[User / Channel]
+        ZCG[Gateway Runtime]
+        ZCA[AgentBuilder + PromptBuilder]
+        ZCS[Skills\nFull or Compact]
+        ZCT[Dynamic Tool Surface\nAllowlist + Deferred MCP]
+        ZCMem[Memory Enrichment]
+        ZCL[Tool Call Loop]
+        ZCM[LLM]
+        ZCU --> ZCG --> ZCA
+        ZCS --> ZCA
+        ZCT --> ZCL
+        ZCMem --> ZCA
+        ZCA --> ZCL --> ZCM
+    end
+
+    OCG -. platform orchestration .- ZCG
+    OCT -. policy-driven filtering .- ZCT
+    OCS -. on-demand by default .- ZCS
+    OCB -. bootstrap-heavy context .- ZCMem
+    OCP -. precomposed prompt emphasis .- ZCL
+```
+
+## 4. 비교표
 
 | 비교 항목 | OpenClaw | ZeroClaw |
 | --- | --- | --- |
@@ -36,7 +80,7 @@ OpenClaw와 ZeroClaw는 모두 `agent + gateway + channel + tools + skills + mem
 | 확장 방식 | plugin/SDK seam이 강하고 외부 확장에 친화적 | 내부 모듈 결합이 강하지만 MCP와 skill audit를 통해 안전하게 확장 |
 | agent 설정의 인상 | sandbox, channel, owner, policy, subagent 등 운영 정책 변수가 많음 | allowed_tools, excluded_tools, autonomy, deferred loading 등 실행 표면 제어가 명시적 |
 
-## 4. 아키텍처 비교
+## 5. 아키텍처 비교
 
 ### OpenClaw
 
@@ -64,7 +108,7 @@ ZeroClaw는 OpenClaw보다 훨씬 직접적인 내부 결합 구조를 가진다
 - ZeroClaw는 "명시적으로 제어 가능한 실행 엔진" 성격이 강하다.
 - 따라서 OpenClaw의 분석 포인트는 정책/플러그인/운영면이고, ZeroClaw의 분석 포인트는 prompt/tool loop/memory pipeline 그 자체다.
 
-## 5. 구성요소별 비교
+## 6. 구성요소별 비교
 
 ### agent
 
@@ -96,7 +140,7 @@ ZeroClaw는 OpenClaw보다 훨씬 직접적인 내부 결합 구조를 가진다
 
 이 차이는 OpenClaw가 md 파일을 "워크스페이스 문맥 번들"로 취급하는 반면, ZeroClaw가 이를 "행동과 정체성을 규정하는 1급 구성요소"로 취급함을 보여준다.
 
-## 6. System Prompt, Tools, User Input 전달 방식 비교
+## 7. System Prompt, Tools, User Input 전달 방식 비교
 
 ### OpenClaw
 
@@ -129,7 +173,7 @@ ZeroClaw는 agent path와 channel path 모두에서 prompt 조립이 비교적 �
 - OpenClaw는 "실행 전 조립된 운영 문맥"의 비중이 크다.
 - ZeroClaw는 "실행 중 재계산되는 tool surface와 memory 문맥"의 비중이 크다.
 
-## 7. Skills 비교
+## 8. Skills 비교
 
 ### 공통점
 
@@ -157,7 +201,7 @@ ZeroClaw는 agent path와 channel path 모두에서 prompt 조립이 비교적 �
 
 즉 skill 처리만 놓고 보면 ZeroClaw가 더 명시적인 주입 전략 옵션을 제공하고, OpenClaw는 기본적으로 모델 추론에 맡기는 catalog 접근을 선호한다.
 
-## 8. Tools 및 Tool Filtering 비교
+## 9. Tools 및 Tool Filtering 비교
 
 ### 공통점
 
@@ -188,7 +232,7 @@ README가 특별히 요구한 "질의와 연계된 tool filtering 여부"에 대
 - OpenClaw: 뚜렷한 query-semantic tool filtering은 확인되지 않았다.
 - ZeroClaw: MCP 계열에서 keyword 기반 query 연계 filtering이 실제로 존재한다.
 
-## 9. Memory와 Bootstrap 문맥 비교
+## 10. Memory와 Bootstrap 문맥 비교
 
 ### OpenClaw
 
@@ -206,7 +250,7 @@ README가 특별히 요구한 "질의와 연계된 tool filtering 여부"에 대
 - OpenClaw는 memory를 bootstrap 문맥 계층과 함께 다루는 성격이 강하다.
 - ZeroClaw는 curated memory와 operational memory를 분리하고, retrieval 경로까지 런타임에 녹여 놓았다.
 
-## 10. 기타 Agent 설정 비교
+## 11. 기타 Agent 설정 비교
 
 README가 요구한 "기타 agent 설정" 관점에서도 차이가 분명하다.
 
@@ -230,7 +274,7 @@ README가 요구한 "기타 agent 설정" 관점에서도 차이가 분명하다
 
 이 설정들은 주로 "실행 시점에 capability를 얼마나 정밀하게 열고 닫을 것인가"에 집중되어 있다.
 
-## 11. 핵심 유사점
+## 12. 핵심 유사점
 
 - 둘 다 agent, gateway, channel, tools, skills, memory를 포함하는 종합 assistant 런타임이다.
 - 둘 다 md 파일을 단순 문서가 아니라 agent 행동을 규정하는 bootstrap/personality 문맥으로 사용한다.
@@ -238,7 +282,7 @@ README가 요구한 "기타 agent 설정" 관점에서도 차이가 분명하다
 - 둘 다 tool을 많이 다루며, 무제한 노출 대신 어떤 형태로든 filtering 또는 제한 전략을 둔다.
 - 둘 다 channel 특성과 runtime 조건을 system prompt 또는 tool surface에 반영한다.
 
-## 12. 핵심 차이점
+## 13. 핵심 차이점
 
 - OpenClaw는 plugin/SDK와 정책 레이어가 강한 플랫폼형 구조이고, ZeroClaw는 단일 런타임 안에서 내부 모듈이 직접 연결된 엔진형 구조다.
 - OpenClaw의 skill 기본 전략은 catalog 기반 온디맨드 로딩이고, ZeroClaw는 `full`/`compact` 두 모드로 사전주입형과 온디맨드형을 모두 지원한다.
@@ -246,7 +290,7 @@ README가 요구한 "기타 agent 설정" 관점에서도 차이가 분명하다
 - OpenClaw는 bootstrap context를 큰 system prompt 안에 넣는 성격이 강하고, ZeroClaw는 memory enrichment와 iteration별 tool spec 재구성처럼 실행 중 동작이 더 명시적이다.
 - OpenClaw는 gateway 중심 control plane 성격이 강하고, ZeroClaw는 agent loop 자체의 제어 가능성이 더 직접적으로 드러난다.
 
-## 13. 최종 해석
+## 14. 최종 해석
 
 agentic workflow 관점에서 보면, OpenClaw와 ZeroClaw는 비슷한 외형을 공유하지만 서로 다른 최적화 목표를 가진다.
 

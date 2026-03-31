@@ -15,7 +15,43 @@
 
 OpenClaw보다 "구성 요소가 내부 모듈로 직접 연결"되어 있고, prompt builder와 tool loop도 repo 안에서 명시적으로 보인다.
 
-## 2. 핵심 구성요소와 역할
+## 2. 구조 다이어그램
+
+```mermaid
+%%{init: {"theme": "base", "themeVariables": {"background": "#0b1220", "mainBkg": "#111827", "secondBkg": "#111827", "tertiaryColor": "#111827", "primaryColor": "#111827", "secondaryColor": "#0f172a", "primaryTextColor": "#f9fafb", "secondaryTextColor": "#e5e7eb", "tertiaryTextColor": "#e5e7eb", "primaryBorderColor": "#e5e7eb", "secondaryBorderColor": "#cbd5e1", "tertiaryBorderColor": "#cbd5e1", "lineColor": "#e5e7eb", "textColor": "#f9fafb", "clusterBkg": "#0f172a", "clusterBorder": "#e5e7eb", "edgeLabelBackground": "#0b1220", "nodeBorder": "#e5e7eb"}}}%%
+flowchart TB
+    User[User Query]
+    Channel[Channel Runtime\nCLI / Telegram / Discord / Slack]
+    Gateway[Gateway\nDashboard + Channels + MCP]
+
+    subgraph AgentCore[ZeroClaw Agent Core]
+        Builder[AgentBuilder]
+        Personality[Personality Files\nSOUL / IDENTITY / USER / AGENTS / TOOLS / MEMORY]
+        Skills[Skills\nWorkspace + Open-Skills\nFull or Compact Injection]
+        Tools[Tools Registry\nBuilt-in + MCP + Delegate / Swarm / Cron]
+        Prompt[SystemPromptBuilder\nPromptContext Assembly]
+        Memory[Memory Layer\nMEMORY.md + Daily Memory + Response Cache]
+        Loop[turn / turn_streamed\nTool Call Loop]
+        Deferred[Deferred MCP\nTool Search / Activation]
+    end
+
+    Model[LLM Provider]
+
+    User --> Channel --> Gateway --> Builder
+    Personality --> Prompt
+    Skills --> Prompt
+    Tools --> Builder
+    Memory --> Builder
+    Builder --> Prompt --> Loop --> Model
+    Memory --> Loop
+    Tools --> Loop
+    Deferred --> Loop
+    Channel --> Prompt
+    Gateway --> Prompt
+    Model --> Loop --> Gateway --> Channel
+```
+
+## 3. 핵심 구성요소와 역할
 
 ### agent
 
@@ -48,7 +84,7 @@ OpenClaw보다 "구성 요소가 내부 모듈로 직접 연결"되어 있고, p
 - open-skills 저장소도 opt-in으로 동기화할 수 있다.
 - skill 디렉토리는 security audit를 통과해야 로드된다.
 
-## 3. md 파일들의 역할
+## 4. md 파일들의 역할
 
 ZeroClaw는 md 파일을 더 노골적으로 "정체성/행동/문맥 파일"로 본다.
 
@@ -86,7 +122,7 @@ ZeroClaw는 두 종류를 분리한다.
 
 이 분리가 코드와 온보딩 문구 둘 다에서 분명하다.
 
-## 4. skills의 역할과 특징
+## 5. skills의 역할과 특징
 
 ### skill 로딩
 
@@ -136,7 +172,7 @@ ZeroClaw는 여기서 OpenClaw와 차이가 크다.
 
 즉 ZeroClaw는 config에 따라 "사전주입형"과 "온디맨드형"을 모두 지원한다.
 
-## 5. tools의 역할과 특징
+## 6. tools의 역할과 특징
 
 ### tool 등록
 
@@ -169,7 +205,7 @@ ZeroClaw는 여기서 OpenClaw와 차이가 크다.
 
 이건 prompt 크기와 tool explosion을 줄이는 명시적 전략이다.
 
-## 6. system instruction / tools / user input 전달 흐름
+## 7. system instruction / tools / user input 전달 흐름
 
 ### agent path
 
@@ -221,7 +257,7 @@ ZeroClaw는 여기서 OpenClaw와 차이가 크다.
 
 로 enrich되어 provider에 전달된다.
 
-## 7. query 연계 tool filtering 여부
+## 8. query 연계 tool filtering 여부
 
 ### 결론
 
@@ -260,7 +296,7 @@ ZeroClaw에는 query 연계 tool filtering이 실제로 존재한다. 다만 범
 
 다만 이번에 확인한 주 실행 경로에서는 이 analyzer가 `run_tool_call_loop(...)`에 직접 연결되어 있는 증거는 찾지 못했다. 따라서 "존재는 하지만 현재 핵심 실행 경로에서 강하게 쓰인다고 단정하기는 어렵다"고 보는 것이 안전하다.
 
-## 8. 일반 질의 vs skill/tool 사용 질의에서 system prompt 차이
+## 9. 일반 질의 vs skill/tool 사용 질의에서 system prompt 차이
 
 ### 일반 질의
 
@@ -281,7 +317,7 @@ ZeroClaw에는 query 연계 tool filtering이 실제로 존재한다. 다만 범
 즉 ZeroClaw는 "질의 종류에 따라 prompt 내용이 약간 달라진다"기보다,
 "질의와 config에 따라 실제 tool surface가 iteration마다 달라진다"는 쪽이 더 정확하다.
 
-## 9. 특징 요약
+## 10. 특징 요약
 
 - ZeroClaw는 Rust 내부 모듈에서 prompt, tool loop, filtering이 매우 명시적으로 보인다.
 - md 파일은 personality/bootstrap 계층으로 강하게 통합되어 있다.
