@@ -37,6 +37,12 @@ flowchart TB
 
     Model[LLM Provider]
 
+    classDef default fill:#0f172a,stroke:#e5e7eb,color:#f9fafb;
+    classDef outer fill:#111827,stroke:#e5e7eb,color:#f9fafb;
+    class User,Channel,Gateway,Model outer;
+    style AgentCore fill:#111827,stroke:#e5e7eb,color:#f9fafb
+    linkStyle default stroke:#e5e7eb,color:#f9fafb
+
     User --> Channel --> Gateway --> Builder
     Personality --> Prompt
     Skills --> Prompt

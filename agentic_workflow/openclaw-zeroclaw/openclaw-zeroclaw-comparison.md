@@ -56,6 +56,11 @@ flowchart LR
         ZCA --> ZCL --> ZCM
     end
 
+    classDef default fill:#0f172a,stroke:#e5e7eb,color:#f9fafb;
+    style OC fill:#111827,stroke:#e5e7eb,color:#f9fafb
+    style ZC fill:#111827,stroke:#e5e7eb,color:#f9fafb
+    linkStyle default stroke:#e5e7eb,color:#f9fafb
+
     OCG -. platform orchestration .- ZCG
     OCT -. policy-driven filtering .- ZCT
     OCS -. on-demand by default .- ZCS
