@@ -19,6 +19,7 @@ Codex의 agentic loop는 단발성 completion 호출이 아니라, `thread/sessi
 ## 2. 전체 아키텍처
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#ffffff","primaryTextColor":"#000000","primaryBorderColor":"#000000","lineColor":"#000000","secondaryColor":"#ffffff","tertiaryColor":"#ffffff","clusterBkg":"#ffffff","clusterBorder":"#000000","edgeLabelBackground":"#ffffff"}}}%%
 flowchart LR
     U[User]
     C[Client<br/>CLI / TUI / IDE / Desktop]
@@ -36,11 +37,19 @@ flowchart LR
     A --> T
     T --> A
     A --> C
+
+    classDef plain fill:#fff,stroke:#000,color:#000,stroke-width:1px;
+    classDef focus fill:#fff,stroke:#000,color:#000,stroke-width:2px;
+    classDef dashed fill:#fff,stroke:#000,color:#000,stroke-dasharray: 5 3;
+    class U,C plain;
+    class A,M focus;
+    class L,T dashed;
 ```
 
 ## 3. Client / Server 계층
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#ffffff","primaryTextColor":"#000000","primaryBorderColor":"#000000","lineColor":"#000000","secondaryColor":"#ffffff","tertiaryColor":"#ffffff","clusterBkg":"#ffffff","clusterBorder":"#000000","edgeLabelBackground":"#ffffff"}}}%%
 flowchart TB
     subgraph Client Side
         U[User]
@@ -71,6 +80,13 @@ flowchart TB
     API --> MODEL
     MODEL --> API
     API --> APP
+
+    classDef plain fill:#fff,stroke:#000,color:#000,stroke-width:1px;
+    classDef focus fill:#fff,stroke:#000,color:#000,stroke-width:2px;
+    classDef dashed fill:#fff,stroke:#000,color:#000,stroke-dasharray: 5 3;
+    class U,CLI,IDE plain;
+    class APP,API focus;
+    class FS,TOOL,STATE,MODEL dashed;
 ```
 
 이 계층에서 역할을 나누면 아래와 같다.
@@ -83,6 +99,7 @@ flowchart TB
 ## 4. Agentic Loop
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#ffffff","primaryTextColor":"#000000","primaryBorderColor":"#000000","lineColor":"#000000","secondaryColor":"#ffffff","tertiaryColor":"#ffffff","clusterBkg":"#ffffff","clusterBorder":"#000000","edgeLabelBackground":"#ffffff"}}}%%
 flowchart TD
     S[Turn Start]
     C1[Build TurnContext]
@@ -100,6 +117,13 @@ flowchart TD
     D -- Yes --> T1 --> T2 --> M1
     P -- Yes --> S
     P -- No --> E
+
+    classDef plain fill:#fff,stroke:#000,color:#000,stroke-width:1px;
+    classDef focus fill:#fff,stroke:#000,color:#000,stroke-width:2px;
+    classDef dashed fill:#fff,stroke:#000,color:#000,stroke-dasharray: 5 3;
+    class S,E plain;
+    class C1,C2,C3,M1,T1,T2 focus;
+    class D,P dashed;
 ```
 
 이 루프에서 Codex는 단순히 모델 응답만 받는 것이 아니라 아래를 함께 수행한다.
@@ -130,6 +154,7 @@ base instructions
 ## 6. Prompt Assembly 상세 흐름
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#ffffff","primaryTextColor":"#000000","primaryBorderColor":"#000000","lineColor":"#000000","secondaryColor":"#ffffff","tertiaryColor":"#ffffff","clusterBkg":"#ffffff","clusterBorder":"#000000","edgeLabelBackground":"#ffffff"}}}%%
 flowchart TD
     B[Base Instructions]
     D[Developer Sections<br/>permissions / collab mode / apps / skills / plugins]
@@ -147,6 +172,12 @@ flowchart TD
     I --> P
     O --> P
     TS --> P
+
+    classDef plain fill:#fff,stroke:#000,color:#000,stroke-width:1px;
+    classDef focus fill:#fff,stroke:#000,color:#000,stroke-width:2px;
+    classDef dashed fill:#fff,stroke:#000,color:#000,stroke-dasharray: 5 3;
+    class B,P focus;
+    class D,U,H,I,O,TS dashed;
 ```
 
 각 레이어의 역할은 다르다.
@@ -163,6 +194,7 @@ flowchart TD
 Codex는 모든 tool을 항상 같은 방식으로 보내는 것이 아니다.
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#ffffff","primaryTextColor":"#000000","primaryBorderColor":"#000000","lineColor":"#000000","secondaryColor":"#ffffff","tertiaryColor":"#ffffff","clusterBkg":"#ffffff","clusterBorder":"#000000","edgeLabelBackground":"#ffffff"}}}%%
 flowchart TD
     T0[All available tools]
     F1[Mode / channel filter]
@@ -173,6 +205,12 @@ flowchart TD
     TV[Model-visible tools]
 
     T0 --> F1 --> F2 --> F3 --> F4 --> F5 --> TV
+
+    classDef plain fill:#fff,stroke:#000,color:#000,stroke-width:1px;
+    classDef focus fill:#fff,stroke:#000,color:#000,stroke-width:2px;
+    classDef dashed fill:#fff,stroke:#000,color:#000,stroke-dasharray: 5 3;
+    class T0,TV focus;
+    class F1,F2,F3,F4,F5 dashed;
 ```
 
 즉 "질문 의미를 보고 그때그때 연관 tool만 semantic search로 고른다"기보다, 더 실제적인 정책 기반 필터링 구조에 가깝다.

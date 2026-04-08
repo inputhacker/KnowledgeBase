@@ -102,7 +102,9 @@ pub struct Prompt {
 개념적으로는 아래 순서가 가장 가깝다.
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#ffffff","primaryTextColor":"#000000","primaryBorderColor":"#000000","lineColor":"#000000","secondaryColor":"#ffffff","tertiaryColor":"#ffffff","actorBorder":"#000000","actorBkg":"#ffffff","actorTextColor":"#000000","actorLineColor":"#000000","signalColor":"#000000","signalTextColor":"#000000","labelBoxBkgColor":"#ffffff","labelBoxBorderColor":"#000000","labelTextColor":"#000000","noteBkgColor":"#ffffff","noteBorderColor":"#000000","noteTextColor":"#000000","sequenceNumberColor":"#000000"}}}%%
 sequenceDiagram
+    autonumber
     participant User as User
     participant Codex as Codex Runtime
     participant Ctx as Context Builder
@@ -361,6 +363,7 @@ turn마다 모든 tool이 동일하게 노출되는 것은 아니다. 공개 코
 개념 흐름은 아래와 같다.
 
 ```mermaid
+%%{init: {"theme":"base","themeVariables":{"primaryColor":"#ffffff","primaryTextColor":"#000000","primaryBorderColor":"#000000","lineColor":"#000000","secondaryColor":"#ffffff","tertiaryColor":"#ffffff","clusterBkg":"#ffffff","clusterBorder":"#000000","edgeLabelBackground":"#ffffff"}}}%%
 flowchart TD
     P1[Prompt with current history]
     M1[Model emits tool call]
@@ -370,6 +373,12 @@ flowchart TD
     M2[Model continues reasoning / answers]
 
     P1 --> M1 --> T1 --> R1 --> P2 --> M2
+
+    classDef plain fill:#fff,stroke:#000,color:#000,stroke-width:1px;
+    classDef focus fill:#fff,stroke:#000,color:#000,stroke-width:2px;
+    classDef dashed fill:#fff,stroke:#000,color:#000,stroke-dasharray: 5 3;
+    class P1,P2 focus;
+    class M1,T1,R1,M2 dashed;
 ```
 
 중요한 점:
