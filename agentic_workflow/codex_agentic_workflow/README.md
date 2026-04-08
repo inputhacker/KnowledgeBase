@@ -19,7 +19,7 @@ Codex의 agentic loop는 단발성 completion 호출이 아니라, `thread/sessi
 ## 2. 전체 아키텍처
 
 ```mermaid
-%%{init: {"theme":"base","themeVariables":{"primaryColor":"#ffffff","primaryTextColor":"#000000","primaryBorderColor":"#000000","lineColor":"#000000","secondaryColor":"#ffffff","tertiaryColor":"#ffffff","clusterBkg":"#ffffff","clusterBorder":"#000000","edgeLabelBackground":"#ffffff"}}}%%
+%%{init: {"theme":"base","themeVariables":{"background":"#000000","primaryColor":"#000000","primaryTextColor":"#ffffff","primaryBorderColor":"#ffffff","lineColor":"#ffffff","secondaryColor":"#000000","secondaryTextColor":"#ffffff","secondaryBorderColor":"#ffffff","tertiaryColor":"#000000","tertiaryTextColor":"#ffffff","tertiaryBorderColor":"#ffffff","clusterBkg":"#000000","clusterBorder":"#ffffff","defaultLinkColor":"#ffffff","edgeLabelBackground":"#000000"}}}%%
 flowchart LR
     U[User]
     C[Client<br/>CLI / TUI / IDE / Desktop]
@@ -38,9 +38,9 @@ flowchart LR
     T --> A
     A --> C
 
-    classDef plain fill:#fff,stroke:#000,color:#000,stroke-width:1px;
-    classDef focus fill:#fff,stroke:#000,color:#000,stroke-width:2px;
-    classDef dashed fill:#fff,stroke:#000,color:#000,stroke-dasharray: 5 3;
+    classDef plain fill:#000,stroke:#fff,color:#fff,stroke-width:1px;
+    classDef focus fill:#000,stroke:#fff,color:#fff,stroke-width:2px;
+    classDef dashed fill:#000,stroke:#fff,color:#fff,stroke-dasharray: 5 3;
     class U,C plain;
     class A,M focus;
     class L,T dashed;
@@ -49,7 +49,7 @@ flowchart LR
 ## 3. Client / Server 계층
 
 ```mermaid
-%%{init: {"theme":"base","themeVariables":{"primaryColor":"#ffffff","primaryTextColor":"#000000","primaryBorderColor":"#000000","lineColor":"#000000","secondaryColor":"#ffffff","tertiaryColor":"#ffffff","clusterBkg":"#ffffff","clusterBorder":"#000000","edgeLabelBackground":"#ffffff"}}}%%
+%%{init: {"theme":"base","themeVariables":{"background":"#000000","primaryColor":"#000000","primaryTextColor":"#ffffff","primaryBorderColor":"#ffffff","lineColor":"#ffffff","secondaryColor":"#000000","secondaryTextColor":"#ffffff","secondaryBorderColor":"#ffffff","tertiaryColor":"#000000","tertiaryTextColor":"#ffffff","tertiaryBorderColor":"#ffffff","clusterBkg":"#000000","clusterBorder":"#ffffff","defaultLinkColor":"#ffffff","edgeLabelBackground":"#000000"}}}%%
 flowchart TB
     subgraph Client Side
         U[User]
@@ -81,9 +81,9 @@ flowchart TB
     MODEL --> API
     API --> APP
 
-    classDef plain fill:#fff,stroke:#000,color:#000,stroke-width:1px;
-    classDef focus fill:#fff,stroke:#000,color:#000,stroke-width:2px;
-    classDef dashed fill:#fff,stroke:#000,color:#000,stroke-dasharray: 5 3;
+    classDef plain fill:#000,stroke:#fff,color:#fff,stroke-width:1px;
+    classDef focus fill:#000,stroke:#fff,color:#fff,stroke-width:2px;
+    classDef dashed fill:#000,stroke:#fff,color:#fff,stroke-dasharray: 5 3;
     class U,CLI,IDE plain;
     class APP,API focus;
     class FS,TOOL,STATE,MODEL dashed;
@@ -99,7 +99,7 @@ flowchart TB
 ## 4. Agentic Loop
 
 ```mermaid
-%%{init: {"theme":"base","themeVariables":{"primaryColor":"#ffffff","primaryTextColor":"#000000","primaryBorderColor":"#000000","lineColor":"#000000","secondaryColor":"#ffffff","tertiaryColor":"#ffffff","clusterBkg":"#ffffff","clusterBorder":"#000000","edgeLabelBackground":"#ffffff"}}}%%
+%%{init: {"theme":"base","themeVariables":{"background":"#000000","primaryColor":"#000000","primaryTextColor":"#ffffff","primaryBorderColor":"#ffffff","lineColor":"#ffffff","secondaryColor":"#000000","secondaryTextColor":"#ffffff","secondaryBorderColor":"#ffffff","tertiaryColor":"#000000","tertiaryTextColor":"#ffffff","tertiaryBorderColor":"#ffffff","clusterBkg":"#000000","clusterBorder":"#ffffff","defaultLinkColor":"#ffffff","edgeLabelBackground":"#000000"}}}%%
 flowchart TD
     S[Turn Start]
     C1[Build TurnContext]
@@ -118,9 +118,9 @@ flowchart TD
     P -- Yes --> S
     P -- No --> E
 
-    classDef plain fill:#fff,stroke:#000,color:#000,stroke-width:1px;
-    classDef focus fill:#fff,stroke:#000,color:#000,stroke-width:2px;
-    classDef dashed fill:#fff,stroke:#000,color:#000,stroke-dasharray: 5 3;
+    classDef plain fill:#000,stroke:#fff,color:#fff,stroke-width:1px;
+    classDef focus fill:#000,stroke:#fff,color:#fff,stroke-width:2px;
+    classDef dashed fill:#000,stroke:#fff,color:#fff,stroke-dasharray: 5 3;
     class S,E plain;
     class C1,C2,C3,M1,T1,T2 focus;
     class D,P dashed;
@@ -154,7 +154,7 @@ base instructions
 ## 6. Prompt Assembly 상세 흐름
 
 ```mermaid
-%%{init: {"theme":"base","themeVariables":{"primaryColor":"#ffffff","primaryTextColor":"#000000","primaryBorderColor":"#000000","lineColor":"#000000","secondaryColor":"#ffffff","tertiaryColor":"#ffffff","clusterBkg":"#ffffff","clusterBorder":"#000000","edgeLabelBackground":"#ffffff"}}}%%
+%%{init: {"theme":"base","themeVariables":{"background":"#000000","primaryColor":"#000000","primaryTextColor":"#ffffff","primaryBorderColor":"#ffffff","lineColor":"#ffffff","secondaryColor":"#000000","secondaryTextColor":"#ffffff","secondaryBorderColor":"#ffffff","tertiaryColor":"#000000","tertiaryTextColor":"#ffffff","tertiaryBorderColor":"#ffffff","clusterBkg":"#000000","clusterBorder":"#ffffff","defaultLinkColor":"#ffffff","edgeLabelBackground":"#000000"}}}%%
 flowchart TD
     B[Base Instructions]
     D[Developer Sections<br/>permissions / collab mode / apps / skills / plugins]
@@ -173,9 +173,9 @@ flowchart TD
     O --> P
     TS --> P
 
-    classDef plain fill:#fff,stroke:#000,color:#000,stroke-width:1px;
-    classDef focus fill:#fff,stroke:#000,color:#000,stroke-width:2px;
-    classDef dashed fill:#fff,stroke:#000,color:#000,stroke-dasharray: 5 3;
+    classDef plain fill:#000,stroke:#fff,color:#fff,stroke-width:1px;
+    classDef focus fill:#000,stroke:#fff,color:#fff,stroke-width:2px;
+    classDef dashed fill:#000,stroke:#fff,color:#fff,stroke-dasharray: 5 3;
     class B,P focus;
     class D,U,H,I,O,TS dashed;
 ```
@@ -194,7 +194,7 @@ flowchart TD
 Codex는 모든 tool을 항상 같은 방식으로 보내는 것이 아니다.
 
 ```mermaid
-%%{init: {"theme":"base","themeVariables":{"primaryColor":"#ffffff","primaryTextColor":"#000000","primaryBorderColor":"#000000","lineColor":"#000000","secondaryColor":"#ffffff","tertiaryColor":"#ffffff","clusterBkg":"#ffffff","clusterBorder":"#000000","edgeLabelBackground":"#ffffff"}}}%%
+%%{init: {"theme":"base","themeVariables":{"background":"#000000","primaryColor":"#000000","primaryTextColor":"#ffffff","primaryBorderColor":"#ffffff","lineColor":"#ffffff","secondaryColor":"#000000","secondaryTextColor":"#ffffff","secondaryBorderColor":"#ffffff","tertiaryColor":"#000000","tertiaryTextColor":"#ffffff","tertiaryBorderColor":"#ffffff","clusterBkg":"#000000","clusterBorder":"#ffffff","defaultLinkColor":"#ffffff","edgeLabelBackground":"#000000"}}}%%
 flowchart TD
     T0[All available tools]
     F1[Mode / channel filter]
@@ -206,9 +206,9 @@ flowchart TD
 
     T0 --> F1 --> F2 --> F3 --> F4 --> F5 --> TV
 
-    classDef plain fill:#fff,stroke:#000,color:#000,stroke-width:1px;
-    classDef focus fill:#fff,stroke:#000,color:#000,stroke-width:2px;
-    classDef dashed fill:#fff,stroke:#000,color:#000,stroke-dasharray: 5 3;
+    classDef plain fill:#000,stroke:#fff,color:#fff,stroke-width:1px;
+    classDef focus fill:#000,stroke:#fff,color:#fff,stroke-width:2px;
+    classDef dashed fill:#000,stroke:#fff,color:#fff,stroke-dasharray: 5 3;
     class T0,TV focus;
     class F1,F2,F3,F4,F5 dashed;
 ```

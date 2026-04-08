@@ -102,7 +102,7 @@ pub struct Prompt {
 개념적으로는 아래 순서가 가장 가깝다.
 
 ```mermaid
-%%{init: {"theme":"base","themeVariables":{"primaryColor":"#ffffff","primaryTextColor":"#000000","primaryBorderColor":"#000000","lineColor":"#000000","secondaryColor":"#ffffff","tertiaryColor":"#ffffff","actorBorder":"#000000","actorBkg":"#ffffff","actorTextColor":"#000000","actorLineColor":"#000000","signalColor":"#000000","signalTextColor":"#000000","labelBoxBkgColor":"#ffffff","labelBoxBorderColor":"#000000","labelTextColor":"#000000","noteBkgColor":"#ffffff","noteBorderColor":"#000000","noteTextColor":"#000000","sequenceNumberColor":"#000000"}}}%%
+%%{init: {"theme":"base","themeVariables":{"background":"#000000","primaryColor":"#000000","primaryTextColor":"#ffffff","primaryBorderColor":"#ffffff","lineColor":"#ffffff","secondaryColor":"#000000","secondaryTextColor":"#ffffff","secondaryBorderColor":"#ffffff","tertiaryColor":"#000000","tertiaryTextColor":"#ffffff","tertiaryBorderColor":"#ffffff","actorBorder":"#ffffff","actorBkg":"#000000","actorTextColor":"#ffffff","actorLineColor":"#ffffff","signalColor":"#ffffff","signalTextColor":"#ffffff","labelBoxBkgColor":"#000000","labelBoxBorderColor":"#ffffff","labelTextColor":"#ffffff","noteBkgColor":"#000000","noteBorderColor":"#ffffff","noteTextColor":"#ffffff","sequenceNumberColor":"#ffffff"}}}%%
 sequenceDiagram
     autonumber
     participant User as User
@@ -363,7 +363,7 @@ turn마다 모든 tool이 동일하게 노출되는 것은 아니다. 공개 코
 개념 흐름은 아래와 같다.
 
 ```mermaid
-%%{init: {"theme":"base","themeVariables":{"primaryColor":"#ffffff","primaryTextColor":"#000000","primaryBorderColor":"#000000","lineColor":"#000000","secondaryColor":"#ffffff","tertiaryColor":"#ffffff","clusterBkg":"#ffffff","clusterBorder":"#000000","edgeLabelBackground":"#ffffff"}}}%%
+%%{init: {"theme":"base","themeVariables":{"background":"#000000","primaryColor":"#000000","primaryTextColor":"#ffffff","primaryBorderColor":"#ffffff","lineColor":"#ffffff","secondaryColor":"#000000","secondaryTextColor":"#ffffff","secondaryBorderColor":"#ffffff","tertiaryColor":"#000000","tertiaryTextColor":"#ffffff","tertiaryBorderColor":"#ffffff","clusterBkg":"#000000","clusterBorder":"#ffffff","defaultLinkColor":"#ffffff","edgeLabelBackground":"#000000"}}}%%
 flowchart TD
     P1[Prompt with current history]
     M1[Model emits tool call]
@@ -374,9 +374,9 @@ flowchart TD
 
     P1 --> M1 --> T1 --> R1 --> P2 --> M2
 
-    classDef plain fill:#fff,stroke:#000,color:#000,stroke-width:1px;
-    classDef focus fill:#fff,stroke:#000,color:#000,stroke-width:2px;
-    classDef dashed fill:#fff,stroke:#000,color:#000,stroke-dasharray: 5 3;
+    classDef plain fill:#000,stroke:#fff,color:#fff,stroke-width:1px;
+    classDef focus fill:#000,stroke:#fff,color:#fff,stroke-width:2px;
+    classDef dashed fill:#000,stroke:#fff,color:#fff,stroke-dasharray: 5 3;
     class P1,P2 focus;
     class M1,T1,R1,M2 dashed;
 ```
